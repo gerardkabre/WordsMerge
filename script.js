@@ -1,20 +1,18 @@
+//Selecting form the DOM 
 var button = document.querySelector("button");            // botón de merge
 var textOutput = document.querySelector(".block4");       // donde saldrá el texto
 var textarea1 = document.querySelector("#textarea1");     // textarea1
 var textarea2 = document.querySelector("#textarea2");     // textarea3
 var textarea3 = document.querySelector("#textarea3");     // textarea3
 var displayCombinations = document.querySelector("h2");   // mostrar número posibles combinaciones
-var curlBraces = document.querySelector("#CurlBraces");   // CheckBox []
-var Commas = document.querySelector("#Commas");           // Checkbox " "
-var Broad = document.querySelector("#Broad");   // 
-var BroadM = document.querySelector("#BroadM");           // 
-var checkboxes = document.querySelectorAll("input"); 
-var textareas = document.querySelectorAll("textarea");
+var curlBraces = document.querySelector("#CurlBraces");   // CheckBox exact match 
+var Commas = document.querySelector("#Commas");           // Checkbox Phrase match
+var Broad = document.querySelector("#Broad");             // Checkbox broad match
+var BroadM = document.querySelector("#BroadM");           // checkbox Broad modifier 
+var checkboxes = document.querySelectorAll("input");      // ---> ALL checkboxes
+var textareas = document.querySelectorAll("textarea");    // ---> ALL textaras    
 
-/* ---------------------------------------------------------------
-
-Añadir eventos a textareas para el contador de combinaciones posibles con una funcion:  
-
+//Add events to textareas with a function for the live "possible combinations" counter.
 addEvents(textarea1);       
 addEvents(textarea2);
 addEvents(textarea3);
@@ -28,44 +26,16 @@ function addEvents(area) {
         displayCombinations.innerHTML = "<b>" + totalCombinations + "</b>" + " possible combinations"; 
     });   
 } 
-----------------------------------------------------------------------*/ 
 
-/* --------------------------------------------------------------- */
+//Checkboxes |  Adding event listeners to only have one checkbox selected at a time. 
 
-// for loop para ventos de las textareas, misma función que la funcion de arriba. 
-for (var i = 0; i < textareas.length; i++) {
-    textareas[i].addEventListener("input", function(){
-        var area1arr = textareas[i].value.split('\n'); 
-        var area2arr = textareas[i].value.split('\n'); 
-        var area3arr = textareas[i].value.split('\n'); 
-        var totalCombinations = area1arr.length * area2arr.length * area3arr.length;
-        displayCombinations.innerHTML = "<b>" + totalCombinations + "</b>" + " possible combinations"; 
-    });   
-}
-/* --------------------------------------------------------------- */
+Broad.checked = true; // Checked by default when page loads
 
-
-/* --------------------------------------------------------------- 
-
-// for loop para eventos de los checkboxes, misma funcion que los eventlisteners de abajo. 
-
-for (var i = 0; i < checkboxes.length; i++) {
-    checkboxes[i].addEventListener("change", function() {
-        //si this checkbox es igual a True -> los otros checkboxes igual a false. 
-       
-        }
-    })
-}
-
- --------------------------------------------------------------- */
-
-
-//Checkboxes, Si una check la otra uncheck. 
 curlBraces.addEventListener("change", function() {
     if (curlBraces.checked === true) { 
         Commas.checked = false;
         Broad.checked = false;
-        BoradM.checked = false;
+        BroadM.checked = false;
     }});
 
 Commas.addEventListener("change", function (){
@@ -89,15 +59,14 @@ BroadM.addEventListener("change", function (){
         Broad.checked = false;
     }});      
 
-//Funcion Merge al pulsar el botón
+// When Merge button clicled, get arrays with the strings in the textareas and init Word Merge. 
 
 button.addEventListener("click", function() {
-    //obtener arrays con las palabras de las textareas
+    
     var area1arr = textarea1.value.split('\n');  
     var area2arr = textarea2.value.split('\n'); 
     var area3arr =  textarea3.value.split('\n'); 
-
-    //funcion merge
+    
     wordMerge(area1arr,area2arr,area3arr); 
 
     function wordMerge(text1,text2,text3) {  
@@ -106,12 +75,35 @@ button.addEventListener("click", function() {
         for (var i = 0; i < area1arr.length; i++) {
             for (var i2 = 0; i2 < area2arr.length; i2++) {
                 for (var i3 = 0; i3 < area3arr.length; i3++) {
-                    //Check if Wrapper Selected
                     if (curlBraces.checked) {
-                        var p = document.createTextNode("[" + area1arr[i] + " " + area2arr[i2] + " " + area3arr[i3] + "]");
+                        //inside Curl Braces
+                        if (area1arr[i] === "" && area2arr[i] === "") { var p = document.createTextNode("[" + area3arr[i3] + "]");}
+                        else if (area1arr[i] === "" && area3arr[i] === "") { var p = document.createTextNode("[" + area2arr[i2] + "]");}
+                        else if (area2arr[i] === "" && area3arr[i] === "") { var p = document.createTextNode("[" + area1arr[i] + "]");}
+                        else if (area1arr[i] === "" ) { var p = document.createTextNode("[" + area2arr[i2] + " " + area3arr[i3] + "]");}
+                        else if (area3arr[i] === "" ) { var p = document.createTextNode("[" + area1arr[i] + " " + area2arr[i2] + "]");}
+                        else { var p = document.createTextNode("[" + area1arr[i] + " " + area2arr[i2] + " " + area3arr[i3] + "]"); } 
+                        
                     } else if (Commas.checked) { 
-                        var p = document.createTextNode('"' + area1arr[i] + " " + area2arr[i2] + " " + area3arr[i3] + '"');
+                        //inside Commas 
+                        if (area1arr[i] === "" && area2arr[i] === "") { var p = document.createTextNode('"' + area3arr[i3] + '"');}
+                        else if (area1arr[i] === "" && area3arr[i] === "") { var p = document.createTextNode('"' + area2arr[i2] + '"');}
+                        else if (area2arr[i] === "" && area3arr[i] === "") { var p = document.createTextNode('"' + area1arr[i] + '"');}                        
+                        else if (area1arr[i] === "" ) { var p = document.createTextNode('"' + area2arr[i2] + " " + area3arr[i3] + '"');}
+                        else if (area3arr[i] === "" ) { var p = document.createTextNode('"' + area1arr[i] + " " + area2arr[i2] + '"');}
+                        else { var p = document.createTextNode('"' + area1arr[i] + " " + area2arr[i2] + " " + area3arr[i3] + '"');} 
+
+                    } else if (BroadM.checked) { 
+                        //inside Broad Modified Match
+                        if (area1arr[i] === "" && area2arr[i] === "") { var p = document.createTextNode('+' + area3arr[i3]);}
+                        else if (area1arr[i] === "" && area3arr[i] === "") { var p = document.createTextNode('+' + area2arr[i2]);}
+                        else if (area2arr[i] === "" && area3arr[i] === "") { var p = document.createTextNode('+' + area1arr[i]);}                        
+                        else if (area1arr[i] === "" ) { var p = document.createTextNode('+' + area2arr[i2] + " +" + area3arr[i3]);}
+                        else if (area3arr[i] === "" ) { var p = document.createTextNode('+' + area1arr[i] + " +" + area2arr[i2]);}
+                        else { var p = document.createTextNode('+' + area1arr[i] + " +" + area2arr[i2] + " +" + area3arr[i3]);} 
+
                     }  else { 
+                        //Broad
                          var p = document.createTextNode(area1arr[i] + " " + area2arr[i2] + " " + area3arr[i3]);
                     };    
                     textOutput.appendChild(p);   //añadir lo anterior al output
@@ -124,7 +116,17 @@ button.addEventListener("click", function() {
 
 
  
-//añadir checkboxes events, con un for loop y no repetir 4 ceces |||||||||||||||||||||
-//solo el ultimo checkbox se marca de momento                    ||||||||||||||
-//espacio al no poner palabra textarea 1 y usar [ o ""           |||||||||||||||
+// pasar a for loop para añadir eventos de textAreas y CheckBoxes
 
+
+// for loop para eventos de los checkboxes, misma funcion que los eventlisteners de abajo. 
+/*
+for (var i = 0; i < checkboxes.length; i++) {
+    checkboxes[i].addEventListener("change", function() {
+        //si this checkbox es igual a True -> los otros checkboxes igual a false. 
+       if (checkboxes[i] === true) {
+           
+       }
+        }
+    )}
+*/

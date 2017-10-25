@@ -74,9 +74,14 @@ ul {
 }
 li {
     float: left;
+
+}
+
+li a {
     margin-right: 20px;
     color: #797A7C;
     font-weight: lighter;
+    text-decoration: none;
 }
 
 aside {
@@ -170,7 +175,7 @@ form {
     "block1 block1 block2 block2 block3 block3"
     "block1 block1 block2 block2 block3 block3"
     ". . block6 block6 . ."
-    "checkbox checkbox checkbox checkbox checkbox checkbox"
+    ". checkbox checkbox checkbox checkbox ."
     ". . block5 block5 . ."
     ".  block4 block4 block4 block4 .     "
     ".  block4 block4 block4 block4 .     "    
