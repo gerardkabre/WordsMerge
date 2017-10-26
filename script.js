@@ -2,7 +2,7 @@
 //Refactor everything to object 
 
 //Selecting form the DOM 
-
+console.log("trying OOJS");
 var doc = {
     button: document.querySelector("button"),          
     textOutput: document.querySelector(".block4"),
