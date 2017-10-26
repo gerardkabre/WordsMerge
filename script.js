@@ -1,4 +1,4 @@
-//Selecting form the DOM 
+//Selecting from the DOM 
 var button = document.querySelector("button");            // botón de merge
 var textOutput = document.querySelector(".block4");       // donde saldrá el texto
 var textarea1 = document.querySelector("#textarea1");     // textarea1
