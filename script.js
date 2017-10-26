@@ -19,26 +19,24 @@ var doc = {
 }
 
 //Add events to textareas with a function for the live "possible combinations" counter.
-addEvents(textarea1);       
-addEvents(textarea2);
-addEvents(textarea3);
+actions.addEventsTextArea(doc.textarea1);       
+actions.addEventsTextArea(doc.textarea2);
+actions.addEventsTextArea(doc.textarea3);
 
 var actions = {
     addEventsTextArea: function(area) {
         area.addEventListener("input", function(){
-            var area1arr = textarea1.value.split('\n'); 
-            var area2arr = textarea2.value.split('\n'); 
-            var area3arr = textarea3.value.split('\n'); 
+            var area1arr = doc.textarea1.value.split('\n'); 
+            var area2arr = doc.textarea2.value.split('\n'); 
+            var area3arr = doc.textarea3.value.split('\n'); 
             var totalCombinations = area1arr.length * area2arr.length * area3arr.length;
-            displayCombinations.innerHTML = "<b>" + totalCombinations + "</b>" + " possible combinations"; 
-        });   
-    } 
+            doc.displayCombinations.innerHTML = "<b>" + totalCombinations + "</b>" + " possible combinations"; 
+        });  
+    },
+    
 
+} //  fin actions obj
 
-
-    }
-
-function addEvents(area) 
 
 //Checkboxes |  Adding event listeners to only have one checkbox selected at a time. 
 
