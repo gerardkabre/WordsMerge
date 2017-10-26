@@ -18,10 +18,6 @@ var doc = {
     textareas: document.querySelectorAll("textarea"),    // ---> ALL textaras    
 }
 
-//Add events to textareas with a function for the live "possible combinations" counter.
-actions.addEventsTextArea(doc.textarea1);       
-actions.addEventsTextArea(doc.textarea2);
-actions.addEventsTextArea(doc.textarea3);
 
 var actions = {
     addEventsTextArea: function(area) {
@@ -33,42 +29,44 @@ var actions = {
             doc.displayCombinations.innerHTML = "<b>" + totalCombinations + "</b>" + " possible combinations"; 
         });  
     },
-    
+    addEventsCheckBoxes: function(){
+        Broad.checked = true; // Checked by default when page loads
+        curlBraces.addEventListener("change", function() {
+            if (curlBraces.checked === true) { 
+                Commas.checked = false;
+                Broad.checked = false;
+                BroadM.checked = false;
+            }});
+        Commas.addEventListener("change", function (){
+            if (Commas.checked === true) { 
+                curlBraces.checked = false;
+                Broad.checked = false;
+                BroadM.checked = false;
+            }});
+        Broad.addEventListener("change", function (){
+            if (Broad.checked === true) { 
+                curlBraces.checked = false;
+                Commas.checked = false;
+                BroadM.checked = false;
+            }});    
+        BroadM.addEventListener("change", function (){
+            if (BroadM.checked === true) { 
+                curlBraces.checked = false;
+                Commas.checked = false;
+                Broad.checked = false;
+            }});      
+    }
 
-} //  fin actions obj
+}   //  fin actions obj
+
+actions.addEventsChkecBoxes(); 
+actions.addEventsTextArea(doc.textarea1);       
+actions.addEventsTextArea(doc.textarea2);
+actions.addEventsTextArea(doc.textarea3);
 
 
-//Checkboxes |  Adding event listeners to only have one checkbox selected at a time. 
 
-Broad.checked = true; // Checked by default when page loads
 
-curlBraces.addEventListener("change", function() {
-    if (curlBraces.checked === true) { 
-        Commas.checked = false;
-        Broad.checked = false;
-        BroadM.checked = false;
-    }});
-
-Commas.addEventListener("change", function (){
-    if (Commas.checked === true) { 
-        curlBraces.checked = false;
-        Broad.checked = false;
-        BroadM.checked = false;
-    }});
-
-Broad.addEventListener("change", function (){
-    if (Broad.checked === true) { 
-        curlBraces.checked = false;
-        Commas.checked = false;
-        BroadM.checked = false;
-    }});    
-
-BroadM.addEventListener("change", function (){
-    if (BroadM.checked === true) { 
-        curlBraces.checked = false;
-        Commas.checked = false;
-        Broad.checked = false;
-    }});      
 
 // When Merge button clicled, get arrays with the strings in the textareas and init Word Merge. 
 
@@ -132,12 +130,17 @@ button.addEventListener("click", function() {
 
 // for loop para eventos de los checkboxes, misma funcion que los eventlisteners de abajo. 
 /*
-for (var i = 0; i < checkboxes.length; i++) {
-    checkboxes[i].addEventListener("change", function() {
-        //si this checkbox es igual a True -> los otros checkboxes igual a false. 
-       if (checkboxes[i] === true) {
-           
-       }
-        }
-    )}
+//checkboxes: 
+------------------------------------------------------
+
+if (this.checked === true) {
+	for (var i = 0; i <= checkboxes.length; i++) {
+		if (checkboxes[i] != this) {
+			checkboxes[i] = false; 
+			}
+		}
+	}
+       
+------------------------------------------------------
+
 */
