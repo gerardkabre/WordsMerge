@@ -31,33 +31,15 @@ function addEvents(area) {
 
 Broad.checked = true; // Checked by default when page loads
 
-curlBraces.addEventListener("change", function() {
-    if (curlBraces.checked === true) { 
-        Commas.checked = false;
-        Broad.checked = false;
-        BroadM.checked = false;
-    }});
-
-Commas.addEventListener("change", function (){
-    if (Commas.checked === true) { 
-        curlBraces.checked = false;
-        Broad.checked = false;
-        BroadM.checked = false;
-    }});
-
-Broad.addEventListener("change", function (){
-    if (Broad.checked === true) { 
-        curlBraces.checked = false;
-        Commas.checked = false;
-        BroadM.checked = false;
-    }});    
-
-BroadM.addEventListener("change", function (){
-    if (BroadM.checked === true) { 
-        curlBraces.checked = false;
-        Commas.checked = false;
-        Broad.checked = false;
-    }});      
+for (let i = 0; i < checkboxes.length; i++){
+    checkboxes[i].addEventListener("change", function() {       
+        if (this.checked) {
+            for (var i = 0; i < checkboxes.length; i++) {          
+                if (checkboxes[i] !== this) { checkboxes[i].checked = false; } 
+             }  
+        }  
+    })  
+} 
 
 // When Merge button clicled, get arrays with the strings in the textareas and init Word Merge. 
 
