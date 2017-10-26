@@ -1,31 +1,44 @@
+//Trying OOJS Branch
+//Refactor everything to object 
+
 //Selecting form the DOM 
-var button = document.querySelector("button");            // botón de merge
-var textOutput = document.querySelector(".block4");       // donde saldrá el texto
-var textarea1 = document.querySelector("#textarea1");     // textarea1
-var textarea2 = document.querySelector("#textarea2");     // textarea3
-var textarea3 = document.querySelector("#textarea3");     // textarea3
-var displayCombinations = document.querySelector("h2");   // mostrar número posibles combinaciones
-var curlBraces = document.querySelector("#CurlBraces");   // CheckBox exact match 
-var Commas = document.querySelector("#Commas");           // Checkbox Phrase match
-var Broad = document.querySelector("#Broad");             // Checkbox broad match
-var BroadM = document.querySelector("#BroadM");           // checkbox Broad modifier 
-var checkboxes = document.querySelectorAll("input");      // ---> ALL checkboxes
-var textareas = document.querySelectorAll("textarea");    // ---> ALL textaras    
+
+var doc = {
+    button: document.querySelector("button"),          
+    textOutput: document.querySelector(".block4"),
+    textarea1: document.querySelector("#textarea1"),     
+    textarea2: document.querySelector("#textarea2"),    
+    textarea3: document.querySelector("#textarea3"),     // textarea3
+    displayCombinations: document.querySelector("h2"),   // mostrar número posibles combinaciones
+    curlBraces: document.querySelector("#CurlBraces"),   // CheckBox exact match 
+    Commas: document.querySelector("#Commas"),           // Checkbox Phrase match
+    Broad: document.querySelector("#Broad"),             // Checkbox broad match
+    BroadM: document.querySelector("#BroadM"),           // checkbox Broad modifier 
+    checkboxes: document.querySelectorAll("input"),      // ---> ALL checkboxes
+    textareas: document.querySelectorAll("textarea"),    // ---> ALL textaras    
+}
 
 //Add events to textareas with a function for the live "possible combinations" counter.
 addEvents(textarea1);       
 addEvents(textarea2);
 addEvents(textarea3);
 
-function addEvents(area) {
-    area.addEventListener("input", function(){
-        var area1arr = textarea1.value.split('\n'); 
-        var area2arr = textarea2.value.split('\n'); 
-        var area3arr = textarea3.value.split('\n'); 
-        var totalCombinations = area1arr.length * area2arr.length * area3arr.length;
-        displayCombinations.innerHTML = "<b>" + totalCombinations + "</b>" + " possible combinations"; 
-    });   
-} 
+var actions = {
+    addEventsTextArea: function(area) {
+        area.addEventListener("input", function(){
+            var area1arr = textarea1.value.split('\n'); 
+            var area2arr = textarea2.value.split('\n'); 
+            var area3arr = textarea3.value.split('\n'); 
+            var totalCombinations = area1arr.length * area2arr.length * area3arr.length;
+            displayCombinations.innerHTML = "<b>" + totalCombinations + "</b>" + " possible combinations"; 
+        });   
+    } 
+
+
+
+    }
+
+function addEvents(area) 
 
 //Checkboxes |  Adding event listeners to only have one checkbox selected at a time. 
 
