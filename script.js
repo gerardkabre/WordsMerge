@@ -14,7 +14,7 @@ var doc = {
     textareas: document.querySelectorAll("textarea"),
     area1arr : textarea1.value.split('\n'), 
     area2arr : textarea2.value.split('\n'), 
-    area3arr : textarea3.value.split('\n')
+    area3arr : textarea3.value.split('\n'),
 }
 //||**************** Actions Object *****************||// 
 var actions = {
@@ -96,3 +96,7 @@ actions.initialization()
 actions.textAreasEvents(doc.textarea1);                                   // Add Events to textareas   
 actions.textAreasEvents(doc.textarea2);
 actions.textAreasEvents(doc.textarea3);
+
+//TextAreas Arrays function in the doc object? 
+//unused code inside wordmerge function? 
+//Add events to textAreas with for loop, inside a function with checkbox events. 
