@@ -42,7 +42,7 @@ var actions = {
         var area3arr =  doc.textarea3.value.split('\n'); 
         
         wordMerge(area1arr,area2arr,area3arr); 
-    
+ 
         function wordMerge(text1,text2,text3) {  
             doc.textOutput.textContent = ""; //re-set result to blank. 
     
