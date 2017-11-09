@@ -1,4 +1,4 @@
-//------------- DOM elemenents Object -----------//
+//************** DOM Elements Object **************//
 var doc = {
     button: document.querySelector("button"),          
     textOutput: document.querySelector(".block4"),
@@ -6,96 +6,86 @@ var doc = {
     textarea2: document.querySelector("#textarea2"),    
     textarea3: document.querySelector("#textarea3"),     
     displayCombinations: document.querySelector("h2"),   
-    curlBraces: document.querySelector("#CurlBraces"),   
+    Exact: document.querySelector("#Exact"),   
     Commas: document.querySelector("#Commas"),           
     Broad: document.querySelector("#Broad"),             
     BroadM: document.querySelector("#BroadM"),           
     checkboxes: document.querySelectorAll("input"),      
-    textareas: document.querySelectorAll("textarea"),    
+    textareas: document.querySelectorAll("textarea"),
+    Broad: Broad.checked = true,
+    area1arr : textarea1.value.split('\n'), 
+    area2arr : textarea2.value.split('\n'), 
+    area3arr : textarea3.value.split('\n'),
 }
-//------------- Actions, Methods Object-----------//
+//**************** Textarea + Checkboxes Events *****************// 
+for (var i = 0; i < doc.textareas.length; i++) {
+    doc.textareas[i].addEventListener("input", function(){ 
+        actions.textAreasArrays(); 
+        var totalCombinations = doc.area1arr.length * doc.area2arr.length * doc.area3arr.length;
+        doc.displayCombinations.innerHTML = "<b>" + totalCombinations + "</b>" + " possible combinations"; 
+    })        
+ }
+for (let i = 0; i < doc.checkboxes.length; i++){                          
+    doc.checkboxes[i].addEventListener("change", function() {             
+        for (var i = 0; i < doc.checkboxes.length; i++) {          
+            doc.checkboxes[i] !== this ? doc.checkboxes[i].checked = false : console.log("");
+    }})  
+ }     
+//**************** App *****************// 
 var actions = {
-   textAreasFunction: function(area) {
-            area.addEventListener("input", function(){ 
-            var area1arr = doc.textarea1.value.split('\n'); 
-            var area2arr = doc.textarea2.value.split('\n'); 
-            var area3arr = doc.textarea3.value.split('\n'); 
-            var totalCombinations = area1arr.length * area2arr.length * area3arr.length;
-            doc.displayCombinations.innerHTML = "<b>" + totalCombinations + "</b>" + " possible combinations"; 
-        }    
-    )},  
-    checkboxFunction: function(){
-        for (let i = 0; i < doc.checkboxes.length; i++){
-            doc.checkboxes[i].addEventListener("change", function() {       
-                if (this.checked) {
-                    for (var i = 0; i < doc.checkboxes.length; i++) {          
-                        if (doc.checkboxes[i] !== this) { doc.checkboxes[i].checked = false; } 
-                    }  
-                }  
-            })  
-        }     
-    },
-    buttonFunction: function() {
-        doc.button.addEventListener("click", function() { 
-        var area1arr = doc.textarea1.value.split('\n');  
-        var area2arr = doc.textarea2.value.split('\n'); 
-        var area3arr =  doc.textarea3.value.split('\n'); 
-        
-        wordMerge(area1arr,area2arr,area3arr); 
- 
-        function wordMerge(text1,text2,text3) {  
-            doc.textOutput.textContent = ""; //re-set result to blank. 
-    
-            for (var i = 0; i < area1arr.length; i++) {
-                for (var i2 = 0; i2 < area2arr.length; i2++) {
-                    for (var i3 = 0; i3 < area3arr.length; i3++) {
-                        if (doc.curlBraces.checked) {
-                            //inside Curl Braces
-                            if (area1arr[i] === "" && area2arr[i] === "") { var p = document.createTextNode("[" + area3arr[i3] + "]");}
-                            else if (area1arr[i] === "" && area3arr[i] === "") { var p = document.createTextNode("[" + area2arr[i2] + "]");}
-                            else if (area2arr[i] === "" && area3arr[i] === "") { var p = document.createTextNode("[" + area1arr[i] + "]");}
-                            else if (area1arr[i] === "" ) { var p = document.createTextNode("[" + area2arr[i2] + " " + area3arr[i3] + "]");}
-                            else if (area3arr[i] === "" ) { var p = document.createTextNode("[" + area1arr[i] + " " + area2arr[i2] + "]");}
-                            else { var p = document.createTextNode("[" + area1arr[i] + " " + area2arr[i2] + " " + area3arr[i3] + "]"); } 
-                            
-                        } else if (doc.Commas.checked) { 
-                            //inside Commas 
-                            if (area1arr[i] === "" && area2arr[i] === "") { var p = document.createTextNode('"' + area3arr[i3] + '"');}
-                            else if (area1arr[i] === "" && area3arr[i] === "") { var p = document.createTextNode('"' + area2arr[i2] + '"');}
-                            else if (area2arr[i] === "" && area3arr[i] === "") { var p = document.createTextNode('"' + area1arr[i] + '"');}                        
-                            else if (area1arr[i] === "" ) { var p = document.createTextNode('"' + area2arr[i2] + " " + area3arr[i3] + '"');}
-                            else if (area3arr[i] === "" ) { var p = document.createTextNode('"' + area1arr[i] + " " + area2arr[i2] + '"');}
-                            else { var p = document.createTextNode('"' + area1arr[i] + " " + area2arr[i2] + " " + area3arr[i3] + '"');} 
-    
-                        } else if (doc.BroadM.checked) { 
-                            //inside Broad Modified Match
-                            if (area1arr[i] === "" && area2arr[i] === "") { var p = document.createTextNode('+' + area3arr[i3]);}
-                            else if (area1arr[i] === "" && area3arr[i] === "") { var p = document.createTextNode('+' + area2arr[i2]);}
-                            else if (area2arr[i] === "" && area3arr[i] === "") { var p = document.createTextNode('+' + area1arr[i]);}                        
-                            else if (area1arr[i] === "" ) { var p = document.createTextNode('+' + area2arr[i2] + " +" + area3arr[i3]);}
-                            else if (area3arr[i] === "" ) { var p = document.createTextNode('+' + area1arr[i] + " +" + area2arr[i2]);}
-                            else { var p = document.createTextNode('+' + area1arr[i] + " +" + area2arr[i2] + " +" + area3arr[i3]);} 
-    
-                        }  else { 
-                            //Broad
-                             var p = document.createTextNode(area1arr[i] + " " + area2arr[i2] + " " + area3arr[i3]);
-                        };    
-                        doc.textOutput.appendChild(p);   //añadir lo anterior al output
-                        doc.textOutput.appendChild(document.createElement("br"));   //salto de linea despues de cada palabra. 
-                        }
+   textAreasArrays: function () {
+             doc.area1arr = doc.textarea1.value.split('\n'), 
+             doc.area2arr = doc.textarea2.value.split('\n'), 
+             doc.area3arr = doc.textarea3.value.split('\n')
+   },
+    initialization: function(){                        
+       doc.button.addEventListener("click", function(){
+            doc.textOutput.textContent = "";                                      
+            (function wordMerge() { 
+                var arr1 = [],
+                    arr2 = [],
+                    arr3 = [];                                                                        
+                for (var i = 0; i < doc.area1arr.length; i++) {
+                    for (var i2 = 0; i2 < doc.area2arr.length; i2++) {
+                        for (var i3 = 0; i3 < doc.area3arr.length; i3++) {   
+                            arr1.push(doc.area1arr[i])
+                            arr2.push(doc.area2arr[i2])
+                            arr3.push(doc.area3arr[i3])       
+                } } }
+                for (var i = 0; i < arr1.length; i++) {
+                    arr2[0] === "" && arr3[0] === "" ? AddStrings(arr1[i]) :      // If there's only text in the 1st area
+                    arr1[0] === "" && arr3[0] === "" ? AddStrings(arr2[i]) :      // If there's only text in the 2nd area
+                    arr1[0] === "" && arr2[0] === "" ? AddStrings(arr3[i]) :      // ...
+                    arr1[0] === "" ? AddStrings(arr2[i], arr3[i]) :               
+                    arr2[0] === "" ? AddStrings(arr1[i], arr3[i]) :               
+                    arr3[0] === "" ? AddStrings(arr1[i], arr2[i]) :               
+                    AddStrings(arr1[i], arr2[i], arr3[i]);                        
+                }
+                function AddStrings(firstCol, secondCol, thirdCol){
+                    if(secondCol === undefined && thirdCol === undefined) {                                      // 1 textarea with content
+                            Broad.checked ? textAppend( `${firstCol}` ) : 
+                            BroadM.checked ? textAppend( `+${firstCol}` ) :
+                            Commas.checked ? textAppend( `"${firstCol}"` ) :   
+                            Exact.checked ? textAppend( `[${firstCol}]` ) : Broad.checked = true; 
+                    } else if(thirdCol === undefined) {                                                           //  2 textareas with content
+                            Broad.checked ? textAppend( `${firstCol} ${secondCol}` ) : 
+                            BroadM.checked ? textAppend( `+${firstCol} +${secondCol}` ) :
+                            Commas.checked ? textAppend( `"${firstCol} ${secondCol}"` ) :   
+                            Exact.checked ? textAppend( `[${firstCol} ${secondCol}]` ) : Broad.checked = true;
+                    }  else {                                                                                     // 3 textareas with content
+                            Broad.checked ? textAppend( `${firstCol} ${secondCol} ${thirdCol}` ) : 
+                            BroadM.checked ? textAppend( `+${firstCol} +${secondCol} +${thirdCol}` ) :
+                            Commas.checked ? textAppend( `"${firstCol} ${secondCol} ${thirdCol}"` ) :   
+                            Exact.checked ? textAppend( `[${firstCol} ${secondCol} ${thirdCol}]` ) : Broad.checked = true;
                     }
                 }
-            }
-        });
-    } 
-}  
-//------------- Initialization, addEventListeners -----------//
-function init() { 
-    doc.Broad.checked = true; 
-    actions.textAreasFunction(doc.textarea1);       
-    actions.textAreasFunction(doc.textarea2);
-    actions.textAreasFunction(doc.textarea3);
-    actions.checkboxFunction();  
-    actions.buttonFunction();
-};
-init();
+                function textAppend(raw){
+                    var p = document.createTextNode(raw); 
+                    doc.textOutput.appendChild(p);
+                    doc.textOutput.appendChild(document.createElement("br"));
+                }
+            }())
+        })    
+    }
+}     
+actions.initialization()
