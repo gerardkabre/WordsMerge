@@ -1,91 +1,94 @@
 //************** DOM Elements Object **************//
-var doc = {
-    button: document.querySelector("button"),          
-    textOutput: document.querySelector(".block4"),
-    textarea1: document.querySelector("#textarea1"),     
-    textarea2: document.querySelector("#textarea2"),    
-    textarea3: document.querySelector("#textarea3"),     
-    displayCombinations: document.querySelector("h2"),   
-    Exact: document.querySelector("#Exact"),   
-    Commas: document.querySelector("#Commas"),           
-    Broad: document.querySelector("#Broad"),             
-    BroadM: document.querySelector("#BroadM"),           
-    checkboxes: document.querySelectorAll("input"),      
-    textareas: document.querySelectorAll("textarea"),
-    Broad: Broad.checked = true,
-    area1arr : textarea1.value.split('\n'), 
-    area2arr : textarea2.value.split('\n'), 
-    area3arr : textarea3.value.split('\n'),
-}
-//**************** Textarea + Checkboxes Events *****************// 
-for (var i = 0; i < doc.textareas.length; i++) {
-    doc.textareas[i].addEventListener("input", function(){ 
-        actions.textAreasArrays(); 
-        var totalCombinations = doc.area1arr.length * doc.area2arr.length * doc.area3arr.length;
-        doc.displayCombinations.innerHTML = "<b>" + totalCombinations + "</b>" + " possible combinations"; 
-    })        
- }
-for (let i = 0; i < doc.checkboxes.length; i++){                          
-    doc.checkboxes[i].addEventListener("change", function() {             
-        for (var i = 0; i < doc.checkboxes.length; i++) {          
-            doc.checkboxes[i] !== this ? doc.checkboxes[i].checked = false : console.log("");
-    }})  
- }     
-//**************** App *****************// 
-var actions = {
-   textAreasArrays: function () {
-             doc.area1arr = doc.textarea1.value.split('\n'), 
-             doc.area2arr = doc.textarea2.value.split('\n'), 
-             doc.area3arr = doc.textarea3.value.split('\n')
-   },
-    initialization: function(){                        
-       doc.button.addEventListener("click", function(){
-            doc.textOutput.textContent = "";                                      
-            (function wordMerge() { 
-                var arr1 = [],
-                    arr2 = [],
-                    arr3 = [];                                                                        
-                for (var i = 0; i < doc.area1arr.length; i++) {
-                    for (var i2 = 0; i2 < doc.area2arr.length; i2++) {
-                        for (var i3 = 0; i3 < doc.area3arr.length; i3++) {   
-                            arr1.push(doc.area1arr[i])
-                            arr2.push(doc.area2arr[i2])
-                            arr3.push(doc.area3arr[i3])       
-                } } }
-                for (var i = 0; i < arr1.length; i++) {
-                    arr2[0] === "" && arr3[0] === "" ? AddStrings(arr1[i]) :      // If there's only text in the 1st area
-                    arr1[0] === "" && arr3[0] === "" ? AddStrings(arr2[i]) :      // If there's only text in the 2nd area
-                    arr1[0] === "" && arr2[0] === "" ? AddStrings(arr3[i]) :      // ...
-                    arr1[0] === "" ? AddStrings(arr2[i], arr3[i]) :               
-                    arr2[0] === "" ? AddStrings(arr1[i], arr3[i]) :               
-                    arr3[0] === "" ? AddStrings(arr1[i], arr2[i]) :               
-                    AddStrings(arr1[i], arr2[i], arr3[i]);                        
+(function(){
+        var app = {
+            init: function () { 
+                this.domElements(); 
+                this.addEventListeners();  
+                this.basicConfig();
+            },
+            domElements: function() {
+               this.broadMatch = document.querySelector("#Broad"),  
+               this.exactMatch = document.querySelector("#Exact"),
+               this.button = document.querySelector("button"),
+               this.broadMatchModifier = document.querySelector("#BroadM"),  
+               this.phraseMatch = document.querySelector("#Commas"),        
+               this.textOutput = document.querySelector(".block4"),
+               this.checkBoxes = document.querySelectorAll("input"),   
+               this.textArea1 = document.querySelector("#textarea1"),     
+               this.textArea2 = document.querySelector("#textarea2"),    
+               this.textArea3 = document.querySelector("#textarea3"),  
+               this.arrTextAreas = document.querySelectorAll("textarea"),   
+               this.displayCombinations = document.querySelector("h2") 
+            },
+            addEventListeners: function() {
+                this.checkBoxes.forEach((checkbox) => {
+                    checkbox.addEventListener("change", this.uncheckOtherBoxes.bind(this));   
+                });              
+                this.arrTextAreas.forEach((textarea) => {
+                    textarea.addEventListener("input", this.combinationsCounter.bind(this));   
+                });
+                this.button.addEventListener("click", this.mergeWords.bind(this)); 
+            },
+            uncheckOtherBoxes: function() {
+                this.checkBoxes.forEach((checkbox) => { 
+                     checkbox !== event.target ? checkbox.checked = false : true;  
+                });
+            },
+            combinationsCounter: function() {
+                this.arrTextArea1 = this.textArea1.value.split('\n'); 
+                this.arrTextArea2 = this.textArea2.value.split('\n'); 
+                this.arrTextArea3 = this.textArea3.value.split('\n'); 
+                this.totalCombinations = this.arrTextArea1.length * this.arrTextArea2.length * this.arrTextArea3.length; 
+                this.displayCombinations.innerHTML = "<b>" + this.totalCombinations + "</b>" + " possible combinations"; //MOVE it to Render, or Dont, Speed and this thigns.
+            },
+            mergeWords: function() {
+                this.mergedArr = []; 
+                this.arrTextArea1.map( x => {
+                    this.arrTextArea2.map( y => {
+                        this.arrTextArea3.map( z => {
+                            this.mergedArr.push(`${x} ${y} ${z}`); 
+                        })
+                    })
+                })
+                this.eliminateWhiteSpace(); 
+                this.optionChecked();
+                this.render()
+            },
+            eliminateWhiteSpace: function() {
+                this.mergedArr.forEach((element, index, array) => {
+                    array[index] = element.replace(/^\s+/g, "").replace(/\s+$/g, "").replace(/\s{2}/g, " "); 
+                 }); 
+            },
+            optionChecked: function() { 
+                if(this.exactMatch.checked) {
+                    this.mergedArr.forEach((element, index, array) => {
+                        array[index] = `[${element}]`; 
+                    }); 
+                } else if (this.phraseMatch.checked) {
+                    this.mergedArr.forEach((element, index, array) => {
+                        array[index] = `"${element}"`; 
+                    }); 
+                } else if (this.broadMatchModifier.checked) {
+                    this.mergedArr.forEach((element, index, array) => {
+                        array[index] = element.replace(/^/g,'+').replace(/\s/g, " +");
+                    }); 
                 }
-                function AddStrings(firstCol, secondCol, thirdCol){
-                    if(secondCol === undefined && thirdCol === undefined) {                                      // 1 textarea with content
-                            Broad.checked ? textAppend( `${firstCol}` ) : 
-                            BroadM.checked ? textAppend( `+${firstCol}` ) :
-                            Commas.checked ? textAppend( `"${firstCol}"` ) :   
-                            Exact.checked ? textAppend( `[${firstCol}]` ) : Broad.checked = true; 
-                    } else if(thirdCol === undefined) {                                                           //  2 textareas with content
-                            Broad.checked ? textAppend( `${firstCol} ${secondCol}` ) : 
-                            BroadM.checked ? textAppend( `+${firstCol} +${secondCol}` ) :
-                            Commas.checked ? textAppend( `"${firstCol} ${secondCol}"` ) :   
-                            Exact.checked ? textAppend( `[${firstCol} ${secondCol}]` ) : Broad.checked = true;
-                    }  else {                                                                                     // 3 textareas with content
-                            Broad.checked ? textAppend( `${firstCol} ${secondCol} ${thirdCol}` ) : 
-                            BroadM.checked ? textAppend( `+${firstCol} +${secondCol} +${thirdCol}` ) :
-                            Commas.checked ? textAppend( `"${firstCol} ${secondCol} ${thirdCol}"` ) :   
-                            Exact.checked ? textAppend( `[${firstCol} ${secondCol} ${thirdCol}]` ) : Broad.checked = true;
-                    }
-                }
-                function textAppend(raw){
-                    var p = document.createTextNode(raw); 
-                    doc.textOutput.appendChild(p);
-                    doc.textOutput.appendChild(document.createElement("br"));
-                }
-            }())
-        })    
-    }
-}     
-actions.initialization()
+            },
+            basicConfig: function(){
+                this.broadMatch.checked = true; 
+            },
+            render: function() {
+                    this.textOutput.textContent = ""; 
+                    this.mergedArr.forEach(function(x) {   
+                        this.p = document.createElement('p');
+                        this.p.textContent = x;  
+                        this.textOutput.appendChild(this.p); 
+                    }.bind(this))      
+            },
+        }
+        app.init(); 
+    })(); 
+    
+
+    
+    
