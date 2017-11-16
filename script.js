@@ -40,7 +40,7 @@
                 this.arrTextArea2 = this.textArea2.value.split('\n'); 
                 this.arrTextArea3 = this.textArea3.value.split('\n'); 
                 this.totalCombinations = this.arrTextArea1.length * this.arrTextArea2.length * this.arrTextArea3.length; 
-                this.displayCombinations.innerHTML = "<b>" + this.totalCombinations + "</b>" + " possible combinations"; //MOVE it to Render, or Dont, Speed and this thigns.
+                this.displayCombinations.innerHTML = "<b>" + this.totalCombinations + "</b>" + " possible combinations";
             },
             // Create a new arraw with combined strings from the 3 arrays 
             mergeWords: function() {

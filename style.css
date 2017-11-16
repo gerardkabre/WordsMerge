@@ -293,3 +293,8 @@ footer {
 .block4{
     padding: 20px 20px;
 }
+
+.block4 p { 
+    margin-bottom: 0px;
+    line-height: 2px;
+}
